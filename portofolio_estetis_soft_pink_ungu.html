@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Salsabila | Creative Developer & UI Enthusiast</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        softPink: {
+                            50: '#FFF5F7',
+                            100: '#FDE2E4',
+                            200: '#FFCAD4',
+                            300: '#F4ACB7',
+                            400: '#E78895',
+                            500: '#D66879'
+                        },
+                        softPurple: {
+                            50: '#FAF7FD',
+                            100: '#F2ECFA',
+                            200: '#E2D4F0',
+                            300: '#D8B4E2',
+                            400: '#BDB2FF',
+                            500: '#9C84DF',
+                            600: '#7E52A0'
+                        },
+                        warmMuted: '#9D8189',
+                        deepBerry: '#5A2A46'
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        outfit: ['"Outfit"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif']
+                    },
+                    animation: {
+                        'float-slow': 'float 7s ease-in-out infinite',
+                        'float-reverse': 'floatRev 9s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                        'spin-slow': 'spin 20s linear infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-14px) rotate(2deg)' }
+                        },
+                        floatRev: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(16px) rotate(-2deg)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.45', transform: 'scale(1)' },
+                            '50%': { opacity: '0.75', transform: 'scale(1.08)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Aesthetics & Glows */
+        body {
+            background-color: #FAF6FB;
+            color: #4A3E4D;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Glassmorphism custom styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 10px 30px -10px rgba(216, 180, 226, 0.35), 0 4px 6px -2px rgba(253, 226, 228, 0.3);
+            transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(244, 172, 183, 0.8);
+            box-shadow: 0 20px 38px -10px rgba(189, 178, 255, 0.45), 0 8px 12px -3px rgba(253, 226, 228, 0.4);
+        }
+
+        /* Bento highlight card */
+        .bento-highlight {
+            background: linear-gradient(135deg, rgba(255, 240, 245, 0.85) 0%, rgba(243, 235, 255, 0.85) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+        }
+
+        /* Sparkle canvas for mouse follow */
+        #sparkleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 9px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FDF4F7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E2D4F0;
+            border-radius: 999px;
+            border: 2px solid #FDF4F7;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F4ACB7;
+        }
+    </style>
+</head>
+<body class="selection:bg-softPink-200 selection:text-softPurple-600 relative min-h-screen">
+
+    <!-- Sparkle Canvas Interactive Background -->
+    <canvas id="sparkleCanvas"></canvas>
+
+    <!-- Ambient Gradient Blobs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-softPink-200/60 rounded-full blur-3xl animate-float-slow"></div>
+        <div class="absolute top-1/3 -right-28 w-[28rem] h-[28rem] bg-softPurple-200/50 rounded-full blur-3xl animate-float-reverse"></div>
+        <div class="absolute -bottom-20 left-1/4 w-[32rem] h-[32rem] bg-softPink-100/70 rounded-full blur-3xl animate-pulse-glow"></div>
+        <div class="absolute top-2/3 right-1/4 w-80 h-80 bg-softPurple-300/30 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-4 left-0 right-0 z-50 px-4 md:px-8">
+        <nav class="max-w-6xl mx-auto glass-card rounded-full px-6 py-3 flex items-center justify-between border border-white/80 shadow-md">
+            <!-- Brand / Monogram -->
+            <a href="#beranda" class="flex items-center gap-2.5 group">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-softPink-300 via-softPurple-300 to-softPurple-400 flex items-center justify-center text-white font-serif font-bold text-lg shadow-sm group-hover:scale-105 transition-transform">
+                    A
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-outfit font-bold text-base md:text-lg tracking-wide text-slate-800 flex items-center gap-1">
+                        Aura Salsabila <span class="text-xs text-softPink-400">✨</span>
+                    </span>
+                    <span class="text-[10px] tracking-wider uppercase text-softPurple-500 font-semibold">Web Developer & Designer</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600">
+                <a href="#beranda" class="hover:text-softPurple-500 transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-softPink-400 hover:after:w-full after:transition-all">Beranda</a>
+                <a href="#tentang" class="hover:text-softPurple-500 transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-softPink-400 hover:after:w-full after:transition-all">Pendidikan & Karier</a>
+                <a href="#proyek" class="hover:text-softPurple-500 transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-softPink-400 hover:after:w-full after:transition-all">Proyek</a>
+                <a href="#kontak" class="hover:text-softPurple-500 transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-softPink-400 hover:after:w-full after:transition-all">Kontak</a>
+            </div>
+
+            <!-- Action Button -->
+            <div class="flex items-center gap-3">
+                <a href="#kontak" class="px-5 py-2 rounded-full text-xs md:text-sm font-semibold bg-gradient-to-r from-softPink-400 via-softPurple-300 to-softPurple-400 text-white shadow-sm hover:shadow-md hover:brightness-105 transition-all flex items-center gap-1.5">
+                    <span>Ajak Kerja Sama</span>
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="relative z-10 pt-28 pb-16 max-w-6xl mx-auto px-4 sm:px-6">
+
+        <!-- ================= HERO SECTION (BERANDA) ================= -->
+        <section id="beranda" class="min-h-[85vh] flex flex-col justify-center py-10 md:py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Hero Left Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-softPink-100/90 border border-softPink-200 text-softPink-500 text-xs font-semibold shadow-xs">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Terbuka untuk Peluang Magang & Pekerjaan Frontend
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-800 tracking-tight leading-[1.15]">
+                        Halo manis! Saya <br>
+                        <span class="font-serif italic font-normal bg-gradient-to-r from-softPink-400 via-softPurple-400 to-softPurple-600 bg-clip-text text-transparent">
+                            Aura Salsabila
+                        </span>
+                    </h1>
+
+                    <p class="text-slate-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Seorang mahasiswi teknologi yang mencintai keindahan kode dan estetika desain. Mengubah ide kompleks menjadi pengalaman visual website yang lembut, interaktif, dan mudah digunakan.
+                    </p>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                        <!-- Download CV Button -->
+                        <button onclick="handleDownloadCV()" id="btnDownloadCV" class="group relative px-7 py-3.5 rounded-2xl bg-gradient-to-r from-softPink-300 via-softPurple-300 to-softPurple-400 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2.5 overflow-hidden">
+                            <span class="absolute inset-0 w-full h-full bg-white/20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+                            <i data-lucide="file-down" class="w-4 h-4 transition-transform group-hover:-translate-y-0.5"></i>
+                            <span>Unduh CV Saya</span>
+                            <span class="text-[10px] bg-white/30 px-2 py-0.5 rounded-full font-mono">PDF</span>
+                        </button>
+
+                        <a href="#kontak" class="px-6 py-3.5 rounded-2xl bg-white/80 hover:bg-white text-slate-700 font-semibold text-sm border border-softPurple-200 hover:border-softPink-300 shadow-sm transition-all flex items-center gap-2">
+                            <i data-lucide="message-circle-heart" class="w-4 h-4 text-softPink-400"></i>
+                            <span>Hubungi Saya</span>
+                        </a>
+                    </div>
+
+                    <!-- Short Stat Pill Badges -->
+                    <div class="pt-4 flex flex-wrap justify-center lg:justify-start gap-3 text-xs">
+                        <div class="glass-card px-4 py-2 rounded-xl flex items-center gap-2 border-softPink-100">
+                            <span class="font-bold text-softPurple-500 text-sm">12+</span>
+                            <span class="text-slate-500">Proyek Web & Desain</span>
+                        </div>
+                        <div class="glass-card px-4 py-2 rounded-xl flex items-center gap-2 border-softPurple-100">
+                            <span class="font-bold text-softPink-400 text-sm">SMK & Kuliah</span>
+                            <span class="text-slate-500">Track Record IT</span>
+                        </div>
+                        <div class="glass-card px-4 py-2 rounded-xl flex items-center gap-2 border-softPink-100">
+                            <span class="text-amber-400">★★★★★</span>
+                            <span class="text-slate-500">Detail & Clean Code</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Right Interactive Card / Avatar Bento -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-sm">
+                        <!-- Decorative Floating Badges -->
+                        <div class="absolute -top-4 -left-3 glass-card px-3.5 py-2 rounded-2xl flex items-center gap-2 text-xs font-semibold text-slate-700 z-20 shadow-md animate-float-slow">
+                            <div class="w-6 h-6 rounded-full bg-softPink-200 flex items-center justify-center text-softPink-500">🌸</div>
+                            <span>UI/UX Enthusiast</span>
+                        </div>
+
+                        <div class="absolute -bottom-4 -right-3 glass-card px-3.5 py-2 rounded-2xl flex items-center gap-2 text-xs font-semibold text-slate-700 z-20 shadow-md animate-float-reverse">
+                            <div class="w-6 h-6 rounded-full bg-softPurple-200 flex items-center justify-center text-softPurple-600">💻</div>
+                            <span>Clean Frontend Dev</span>
+                        </div>
+
+                        <!-- Card Center Profile -->
+                        <div class="glass-card p-4 rounded-3xl relative overflow-hidden bento-highlight border-2 border-white/80 shadow-xl">
+                            <div class="relative h-96 w-full rounded-2xl overflow-hidden bg-gradient-to-b from-softPink-100 to-softPurple-100 flex flex-col items-center justify-center p-6 text-center">
+                                
+                                <!-- Soft aesthetic decorative star ring -->
+                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                                    <div class="w-72 h-72 border border-dashed border-softPurple-400 rounded-full animate-spin-slow"></div>
+                                </div>
+
+                                <!-- Aesthetic Illustration Avatar -->
+                                <div class="relative w-44 h-44 rounded-full p-2 bg-gradient-to-tr from-softPink-300 via-softPurple-200 to-softPurple-400 shadow-inner mb-4">
+                                    <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center">
+                                        <!-- Inline SVG Female Coder Avatar -->
+                                        <svg viewBox="0 0 120 120" class="w-36 h-36 drop-shadow-md" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="60" cy="60" r="58" fill="#FDE2E4"/>
+                                            <!-- Hair back -->
+                                            <path d="M26 62C26 34 38 18 60 18C82 18 94 34 94 62C94 72 90 85 86 92C80 88 78 80 75 75C68 82 52 82 45 75C42 80 40 88 34 92C30 85 26 72 26 62Z" fill="#5A3E36"/>
+                                            <!-- Shoulders/Clothes -->
+                                            <path d="M22 110C22 95 36 88 60 88C84 88 98 95 98 110V120H22V110Z" fill="#D8B4E2"/>
+                                            <path d="M42 88C45 98 52 104 60 104C68 104 75 98 78 88H42Z" fill="#FFF5F7"/>
+                                            <!-- Face -->
+                                            <ellipse cx="60" cy="54" rx="22" ry="24" fill="#FFE5D9"/>
+                                            <!-- Hair Front & Bangs -->
+                                            <path d="M38 42C44 32 54 30 60 30C66 30 76 32 82 42C80 44 70 38 60 40C50 42 42 44 38 42Z" fill="#47302A"/>
+                                            <!-- Cute blush -->
+                                            <circle cx="46" cy="58" r="4.5" fill="#F4ACB7" opacity="0.6"/>
+                                            <circle cx="74" cy="58" r="4.5" fill="#F4ACB7" opacity="0.6"/>
+                                            <!-- Eyes with sparkle -->
+                                            <circle cx="49" cy="52" r="3" fill="#3D2925"/>
+                                            <circle cx="50" cy="51" r="1" fill="#FFFFFF"/>
+                                            <circle cx="71" cy="52" r="3" fill="#3D2925"/>
+                                            <circle cx="72" cy="51" r="1" fill="#FFFFFF"/>
+                                            <!-- Sweet smile -->
+                                            <path d="M56 61C58 63 62 63 64 61" stroke="#3D2925" stroke-width="2" stroke-linecap="round"/>
+                                            <!-- Glasses aesthetic -->
+                                            <rect x="42" y="46" width="14" height="11" rx="4" stroke="#7E52A0" stroke-width="1.8" fill="none"/>
+                                            <rect x="64" y="46" width="14" height="11" rx="4" stroke="#7E52A0" stroke-width="1.8" fill="none"/>
+                                            <path d="M56 51H64" stroke="#7E52A0" stroke-width="1.8"/>
+                                            <!-- Sparkle star ear / hairpin -->
+                                            <path d="M78 36L79.5 40L83.5 41.5L79.5 43L78 47L76.5 43L72.5 41.5L76.5 40L78 36Z" fill="#F4ACB7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <h3 class="font-bold text-slate-800 text-lg">Aura Salsabila, S.Kom</h3>
+                                <p class="text-xs text-softPurple-500 font-medium">Front-End Developer & UI Specialist</p>
+
+                                <div class="mt-4 flex gap-2">
+                                    <span class="px-2.5 py-1 rounded-full text-[11px] bg-white/70 text-slate-600 border border-softPink-200">HTML/CSS</span>
+                                    <span class="px-2.5 py-1 rounded-full text-[11px] bg-white/70 text-slate-600 border border-softPurple-200">Tailwind</span>
+                                    <span class="px-2.5 py-1 rounded-full text-[11px] bg-white/70 text-slate-600 border border-softPurple-200">Vue/React</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PENDIDIKAN & KARIER (BENTO TIMELINE) ================= -->
+        <section id="tentang" class="py-16 md:py-20">
+            <div class="text-center max-w-xl mx-auto mb-12">
+                <span class="px-3.5 py-1 rounded-full bg-softPurple-100 text-softPurple-500 text-xs font-semibold uppercase tracking-wider">
+                    Jejak Langkah & Portofolio
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mt-2 font-serif">
+                    Pendidikan & Riwayat Karier
+                </h2>
+                <p class="text-slate-500 text-sm mt-2">
+                    Kombinasi fondasi teknik sejak sekolah kejuruan hingga mendalami arsitektur software dan interaksi antarmuka di bangku perkuliahan.
+                </p>
+            </div>
+
+            <!-- Bento Grid Journey Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                <!-- 1. Card SMK (Rekayasa Perangkat Lunak) -->
+                <div class="md:col-span-6 glass-card p-6 md:p-8 rounded-3xl relative overflow-hidden group">
+                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-softPink-100 rounded-full blur-2xl group-hover:scale-125 transition-transform"></div>
+                    
+                    <div class="flex items-start justify-between">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-softPink-200 to-softPink-300 flex items-center justify-center text-softPink-600 shadow-sm">
+                            <i data-lucide="school" class="w-6 h-6"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-softPink-100 text-softPink-500 border border-softPink-200">
+                            2019 — 2022
+                        </span>
+                    </div>
+
+                    <div class="mt-5">
+                        <div class="text-xs uppercase tracking-wider font-semibold text-softPink-400">Pendidikan Vokasi Kejuruan</div>
+                        <h3 class="text-xl font-bold text-slate-800 mt-1">SMK Negeri 1 Surabaya</h3>
+                        <p class="text-sm font-medium text-softPurple-500 mt-0.5">Jurusan Rekayasa Perangkat Lunak (RPL)</p>
+                        
+                        <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed">
+                            Mempelajari algoritma pemrograman, logika basis data, dan dasar pembuatan website modern. Meraih penghargaan sebagai <strong class="text-slate-700">Lulusan Terbaik Bidang Frontend Project</strong> tingkat sekolah.
+                        </p>
+
+                        <div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap gap-2 text-xs">
+                            <span class="px-2.5 py-1 rounded-lg bg-white/80 text-slate-600 border border-slate-100 font-mono">HTML5 & CSS3</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-white/80 text-slate-600 border border-slate-100 font-mono">PHP Native</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-white/80 text-slate-600 border border-slate-100 font-mono">MySQL</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-white/80 text-slate-600 border border-slate-100 font-mono">Bootstrap</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Card Kuliah (Teknik Informatika / Sistem Informasi) -->
+                <div class="md:col-span-6 glass-card p-6 md:p-8 rounded-3xl relative overflow-hidden group">
+                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-softPurple-200 rounded-full blur-2xl group-hover:scale-125 transition-transform"></div>
+                    
+                    <div class="flex items-start justify-between">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-softPurple-200 to-softPurple-300 flex items-center justify-center text-softPurple-600 shadow-sm">
+                            <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-softPurple-100 text-softPurple-600 border border-softPurple-200">
+                            2022 — Sekarang (Tingkat Akhir)
+                        </span>
+                    </div>
+
+                    <div class="mt-5">
+                        <div class="text-xs uppercase tracking-wider font-semibold text-softPurple-400">Pendidikan Tinggi Sarjana</div>
+                        <h3 class="text-xl font-bold text-slate-800 mt-1">Universitas Pembangunan Nasional</h3>
+                        <p class="text-sm font-medium text-softPurple-600 mt-0.5">S1 Sistem Informasi & Rekayasa Web</p>
+                        
+                        <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed">
+                            Fokus pada Software Engineering, Human-Computer Interaction (HCI), serta implementasi framework modern berbasis JavaScript & Tailwind. IPK konsisten di angka 3.86/4.00.
+                        </p>
+
+                        <div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap gap-2 text-xs">
+                            <span class="px-2.5 py-1 rounded-lg bg-white/80 text-slate-600 border border-slate-100 font-mono">UI/UX Research</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-white/80 text-slate-600 border border-slate-100 font-mono">React.js</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-white/80 text-slate-600 border border-slate-100 font-mono">Tailwind CSS</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-white/80 text-slate-600 border border-slate-100 font-mono">Git & GitHub</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Pengalaman Praktis & Karier Magang (Span 12) -->
+                <div class="md:col-span-12 glass-card p-6 md:p-8 rounded-3xl bento-highlight">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-softPurple-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-softPink-300 to-softPurple-400 flex items-center justify-center text-white">
+                                <i data-lucide="briefcase" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Pengalaman Kerja & Mini Project</h3>
+                                <p class="text-xs text-slate-500">Kiprah profesional di industri teknologi & agensi kreatif</p>
+                            </div>
+                        </div>
+                        <span class="self-start md:self-auto text-xs px-3 py-1 rounded-full bg-softPurple-100 text-softPurple-600 font-medium">
+                            💼 2+ Periode Magang & Proyek Nyata
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <!-- Role 1 -->
+                        <div class="p-4 rounded-2xl bg-white/60 border border-white hover:border-softPink-300 transition-all">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">Frontend Developer Intern</h4>
+                                    <p class="text-xs text-softPink-500 font-medium">Nexa Studio Creative • 6 Bulan (2024)</p>
+                                </div>
+                                <span class="text-[10px] bg-softPink-100 text-softPink-600 px-2 py-0.5 rounded-md font-medium">Internship</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                                Membantu slicing desain dari Figma ke Tailwind CSS dengan standar responsif tinggi pada 5 landing page klien UMKM & e-commerce.
+                            </p>
+                        </div>
+
+                        <!-- Role 2 -->
+                        <div class="p-4 rounded-2xl bg-white/60 border border-white hover:border-softPurple-300 transition-all">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">UI/UX & Web Designer</h4>
+                                    <p class="text-xs text-softPurple-500 font-medium">Freelance Creative • 2023 — Sekarang</p>
+                                </div>
+                                <span class="text-[10px] bg-softPurple-100 text-softPurple-600 px-2 py-0.5 rounded-md font-medium">Independent</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                                Merancang antarmuka dashboard admin kasir dan aplikasi mobile salon kecantikan dengan fokus persona pengguna perempuan & kemudahan aksesibilitas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= KARYA & PROYEK (SHOWCASE CARDS) ================= -->
+        <section id="proyek" class="py-16 md:py-20">
+            <div class="text-center max-w-xl mx-auto mb-10">
+                <span class="px-3.5 py-1 rounded-full bg-softPink-100 text-softPink-500 text-xs font-semibold uppercase tracking-wider">
+                    Galeri Karya Pilihan
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mt-2 font-serif">
+                    Proyek yang Telah Saya Buat
+                </h2>
+                <p class="text-slate-500 text-sm mt-2">
+                    Sentuhan visual cantik berpadu dengan performa responsif dan kode yang bersih.
+                </p>
+
+                <!-- Filter Tags -->
+                <div class="flex justify-center items-center gap-2 mt-6 flex-wrap">
+                    <button onclick="filterProjects('all')" class="filter-btn active px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-softPurple-400 text-white shadow-xs" data-category="all">
+                        Semua Karya
+                    </button>
+                    <button onclick="filterProjects('web')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white/70 text-slate-600 hover:bg-softPink-100 border border-slate-200" data-category="web">
+                        Web Applications
+                    </button>
+                    <button onclick="filterProjects('uiux')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white/70 text-slate-600 hover:bg-softPink-100 border border-slate-200" data-category="uiux">
+                        UI/UX Design
+                    </button>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div id="projectsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Project 1: Florist & Gift Shop -->
+                <div class="project-card glass-card rounded-3xl overflow-hidden flex flex-col group" data-type="web">
+                    <div class="relative h-48 bg-gradient-to-tr from-softPink-200 via-softPink-100 to-softPurple-100 overflow-hidden flex items-center justify-center p-4">
+                        <!-- Mockup illustration inside card -->
+                        <div class="w-full h-full rounded-xl bg-white/85 shadow-md p-3 flex flex-col justify-between transform group-hover:scale-105 transition-transform duration-500 border border-white">
+                            <div class="flex items-center justify-between pb-2 border-b border-softPink-100">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-softPink-300"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-softPurple-300"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-softPurple-200"></span>
+                                </div>
+                                <span class="text-[10px] text-softPink-500 font-serif italic">bloom&petal.id</span>
+                            </div>
+                            <div class="py-2 text-center">
+                                <span class="text-3xl">🌸💐</span>
+                                <p class="text-[11px] font-bold text-slate-700 mt-1">L'amour Florist Store</p>
+                                <p class="text-[9px] text-slate-400">Order Flower Bouquet & Custom Gifts</p>
+                            </div>
+                            <div class="flex justify-between items-center text-[10px] bg-softPink-50 px-2 py-1 rounded-lg">
+                                <span class="font-medium text-slate-600">Checkout Express</span>
+                                <span class="text-softPink-500 font-bold">Rp 185.000</span>
+                            </div>
+                        </div>
+
+                        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-white/90 text-softPink-500 shadow-xs">
+                            Web App
+                        </span>
+                    </div>
+
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex gap-2 flex-wrap mb-2">
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-softPink-100 text-softPink-600">Tailwind</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-softPurple-100 text-softPurple-600">JavaScript</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600">Midtrans API</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-lg group-hover:text-softPurple-600 transition-colors">
+                                Florist & Gift Shop E-Commerce
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                Toko online buket bunga dengan fitur kustomisasi kartu ucapan secara live preview, filter warna pastel, dan payment gateway.
+                            </p>
+                        </div>
+
+                        <div class="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between">
+                            <button onclick="openModal('florist')" class="text-xs font-semibold text-softPurple-600 hover:text-softPink-500 flex items-center gap-1 transition-colors">
+                                <span>Lihat Detail</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <span class="text-[11px] text-slate-400">Tahun 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: Beauty & Clinic Dashboard -->
+                <div class="project-card glass-card rounded-3xl overflow-hidden flex flex-col group" data-type="uiux">
+                    <div class="relative h-48 bg-gradient-to-tr from-softPurple-200 via-softPurple-100 to-softPink-100 overflow-hidden flex items-center justify-center p-4">
+                        <div class="w-full h-full rounded-xl bg-white/85 shadow-md p-3 flex flex-col justify-between transform group-hover:scale-105 transition-transform duration-500 border border-white">
+                            <div class="flex items-center justify-between pb-2 border-b border-softPurple-100">
+                                <span class="text-[10px] font-bold text-softPurple-600">GlowAesthetic POS</span>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-600 font-semibold">Online</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 my-1">
+                                <div class="bg-softPurple-50 p-1.5 rounded-lg text-center">
+                                    <span class="text-[9px] text-slate-500 block">Appointment</span>
+                                    <span class="text-xs font-bold text-softPurple-600">24 Pasien</span>
+                                </div>
+                                <div class="bg-softPink-50 p-1.5 rounded-lg text-center">
+                                    <span class="text-[9px] text-slate-500 block">Treatment</span>
+                                    <span class="text-xs font-bold text-softPink-500">Glow Facial</span>
+                                </div>
+                            </div>
+                            <div class="text-[9px] text-center text-slate-400">✨ Dokter Spesialis Kulit & Estetika</div>
+                        </div>
+
+                        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-white/90 text-softPurple-600 shadow-xs">
+                            UI/UX Design
+                        </span>
+                    </div>
+
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex gap-2 flex-wrap mb-2">
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-softPurple-100 text-softPurple-600">Figma</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-softPink-100 text-softPink-600">Design System</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600">Prototyping</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-lg group-hover:text-softPurple-600 transition-colors">
+                                Glow Clinic POS & Booking App
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                Antarmuka sistem manajemen janji temu dokter kulit, kasir pembayaran obat estetika, serta rekam medis pasien klinik kecantikan.
+                            </p>
+                        </div>
+
+                        <div class="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between">
+                            <button onclick="openModal('clinic')" class="text-xs font-semibold text-softPurple-600 hover:text-softPink-500 flex items-center gap-1 transition-colors">
+                                <span>Lihat Detail</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <span class="text-[11px] text-slate-400">Tahun 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: EduTrack Pastel Dashboard -->
+                <div class="project-card glass-card rounded-3xl overflow-hidden flex flex-col group" data-type="web">
+                    <div class="relative h-48 bg-gradient-to-tr from-softPink-100 via-white to-softPurple-200 overflow-hidden flex items-center justify-center p-4">
+                        <div class="w-full h-full rounded-xl bg-white/85 shadow-md p-3 flex flex-col justify-between transform group-hover:scale-105 transition-transform duration-500 border border-white">
+                            <div class="flex justify-between items-center text-[10px]">
+                                <span class="font-bold text-slate-700">StudyPlanner ✨</span>
+                                <span class="text-softPink-500 font-mono">85% Selesai</span>
+                            </div>
+                            <div class="space-y-1.5 my-2">
+                                <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="w-4/5 h-full bg-gradient-to-r from-softPink-300 to-softPurple-400"></div>
+                                </div>
+                                <div class="flex justify-between text-[9px] text-slate-500">
+                                    <span>Tugas Algoritma</span>
+                                    <span class="text-emerald-500 font-bold">Done</span>
+                                </div>
+                                <div class="flex justify-between text-[9px] text-slate-500">
+                                    <span>Skripsi Bab 3</span>
+                                    <span class="text-amber-500 font-bold">In Review</span>
+                                </div>
+                            </div>
+                            <div class="text-[9px] text-center text-softPurple-500 font-medium bg-softPurple-50 rounded py-0.5">
+                                Pomodoro Mode Aktif ⏱️
+                            </div>
+                        </div>
+
+                        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-white/90 text-softPink-500 shadow-xs">
+                            Web App
+                        </span>
+                    </div>
+
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex gap-2 flex-wrap mb-2">
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-softPurple-100 text-softPurple-600">Vue.js</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-softPink-100 text-softPink-600">Tailwind</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600">LocalStorage</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-lg group-hover:text-softPurple-600 transition-colors">
+                                Study Bloom: Dashboard Belajar
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                Aplikasi pencatat tugas dan jadwal kuliah bertema pastel lo-fi dengan pemutar suara ambien hujan dan timer pomodoro terintegrasi.
+                            </p>
+                        </div>
+
+                        <div class="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between">
+                            <button onclick="openModal('study')" class="text-xs font-semibold text-softPurple-600 hover:text-softPink-500 flex items-center gap-1 transition-colors">
+                                <span>Lihat Detail</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <span class="text-[11px] text-slate-400">Tahun 2023</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= CARD KONTAK UNIK (GET IN TOUCH) ================= -->
+        <section id="kontak" class="py-16 md:py-20">
+            <div class="text-center max-w-xl mx-auto mb-12">
+                <span class="px-3.5 py-1 rounded-full bg-softPurple-100 text-softPurple-600 text-xs font-semibold uppercase tracking-wider">
+                    Mari Terhubung
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mt-2 font-serif">
+                    Hubungi Saya Kapan Saja
+                </h2>
+                <p class="text-slate-500 text-sm mt-2">
+                    Tertarik membuat website feminin & elegan atau mendiskusikan peluang kerja? Kirim pesan langsung lewat form di bawah ini!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Info Cards Column (Left) -->
+                <div class="lg:col-span-5 space-y-4">
+                    <!-- Quick Connect Card -->
+                    <div class="glass-card p-6 rounded-3xl bento-highlight">
+                        <h3 class="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2">
+                            <span>Informasi Kontak</span>
+                            <span class="text-softPink-400">💌</span>
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-5">Saya biasanya merespons dalam waktu kurang dari 24 jam kerja.</p>
+
+                        <div class="space-y-4 text-xs sm:text-sm">
+                            <a href="mailto:aurasalsabila@example.com" class="flex items-center gap-3.5 p-3 rounded-2xl bg-white/60 hover:bg-white hover:text-softPurple-600 transition-all border border-white">
+                                <div class="w-9 h-9 rounded-xl bg-softPink-100 flex items-center justify-center text-softPink-500">
+                                    <i data-lucide="mail" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block font-medium">Email Resmi</span>
+                                    <span class="font-semibold text-slate-700">aurasalsabila@gmail.com</span>
+                                </div>
+                            </a>
+
+                            <a href="https://wa.me/6281234567890" target="_blank" class="flex items-center gap-3.5 p-3 rounded-2xl bg-white/60 hover:bg-white hover:text-emerald-600 transition-all border border-white">
+                                <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-500">
+                                    <i data-lucide="phone" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block font-medium">WhatsApp Aktif</span>
+                                    <span class="font-semibold text-slate-700">+62 812-3456-7890</span>
+                                </div>
+                            </a>
+
+                            <div class="flex items-center gap-3.5 p-3 rounded-2xl bg-white/60 border border-white">
+                                <div class="w-9 h-9 rounded-xl bg-softPurple-100 flex items-center justify-center text-softPurple-600">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block font-medium">Domisili</span>
+                                    <span class="font-semibold text-slate-700">Surabaya & Sidoarjo, Jawa Timur</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Buttons Row -->
+                        <div class="mt-6 pt-5 border-t border-softPurple-100/80">
+                            <span class="text-xs font-semibold text-slate-600 block mb-3">Sosial Media & Repositori:</span>
+                            <div class="flex gap-2">
+                                <a href="https://linkedin.com" target="_blank" class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-600 hover:text-softPurple-600 hover:shadow-md transition-all border border-slate-100" title="LinkedIn">
+                                    <i data-lucide="linkedin" class="w-4 h-4"></i>
+                                </a>
+                                <a href="https://github.com" target="_blank" class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-600 hover:text-softPink-500 hover:shadow-md transition-all border border-slate-100" title="GitHub">
+                                    <i data-lucide="github" class="w-4 h-4"></i>
+                                </a>
+                                <a href="https://instagram.com" target="_blank" class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-600 hover:text-softPink-400 hover:shadow-md transition-all border border-slate-100" title="Instagram">
+                                    <i data-lucide="instagram" class="w-4 h-4"></i>
+                                </a>
+                                <a href="https://dribbble.com" target="_blank" class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-600 hover:text-softPurple-500 hover:shadow-md transition-all border border-slate-100" title="Dribbble">
+                                    <i data-lucide="dribbble" class="w-4 h-4"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cute Coffee/Quote Widget -->
+                    <div class="glass-card p-4 rounded-2xl flex items-center gap-3 border-softPink-200">
+                        <span class="text-2xl">☕</span>
+                        <p class="text-xs text-slate-600 italic">
+                            "Coding dengan hati yang tenang, mendesain dengan estetika yang riang."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Form Card Column (Right) -->
+                <div class="lg:col-span-7">
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl">
+                        <h3 class="text-xl font-bold text-slate-800">Kirim Pesan Manis</h3>
+                        <p class="text-xs text-slate-500 mt-1 mb-6">Silakan isi formulir berikut. Data Anda aman dan akan saya balas melalui email.</p>
+
+                        <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="text-xs font-semibold text-slate-700">Nama Lengkap *</label>
+                                    <input type="text" id="senderName" required placeholder="Contoh: Nabila Putri" class="w-full px-4 py-3 rounded-2xl bg-white/70 border border-slate-200 focus:border-softPurple-400 focus:bg-white focus:outline-none text-xs transition-all placeholder:text-slate-400">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-xs font-semibold text-slate-700">Alamat Email *</label>
+                                    <input type="email" id="senderEmail" required placeholder="nama@perusahaan.com" class="w-full px-4 py-3 rounded-2xl bg-white/70 border border-slate-200 focus:border-softPurple-400 focus:bg-white focus:outline-none text-xs transition-all placeholder:text-slate-400">
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-slate-700">Topik / Subjek</label>
+                                <select id="subjectTopic" class="w-full px-4 py-3 rounded-2xl bg-white/70 border border-slate-200 focus:border-softPurple-400 focus:bg-white focus:outline-none text-xs transition-all text-slate-600">
+                                    <option value="Proyek Web Baru">Ingin Membuat Website Baru</option>
+                                    <option value="Peluang Kerja / Magang">Tawaran Kerja / Magang Frontend</option>
+                                    <option value="Desain UI/UX">Kebutuhan Desain UI/UX Mobile & Web</option>
+                                    <option value="Sapa Santai">Hanya Ingin Menyapa & Berjejaring</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-slate-700">Isi Pesan Anda *</label>
+                                <textarea id="senderMessage" required rows="4" placeholder="Ceritakan ide atau kebutuhan proyekmu di sini..." class="w-full px-4 py-3 rounded-2xl bg-white/70 border border-slate-200 focus:border-softPurple-400 focus:bg-white focus:outline-none text-xs transition-all placeholder:text-slate-400"></textarea>
+                            </div>
+
+                            <button type="submit" id="btnSubmitForm" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-softPink-400 via-softPurple-300 to-softPurple-400 text-white font-semibold text-sm shadow-md hover:shadow-lg hover:brightness-105 transition-all flex items-center justify-center gap-2">
+                                <span>Kirimkan Pesan Sekarang</span>
+                                <i data-lucide="send" class="w-4 h-4"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-softPurple-200/50 bg-white/50 backdrop-blur-md py-8">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-xs text-slate-500 flex items-center justify-center gap-1">
+                Didesain dengan nuansa <span class="text-softPink-400">❤</span> Soft Pink & Purple oleh <span class="font-bold text-slate-700">Aura Salsabila</span>.
+            </p>
+            <p class="text-[11px] text-slate-400 mt-1">© 2026 Seluruh hak cipta dilindungi. Dibuat dengan passion untuk teknologi yang ramah dan estetik.</p>
+        </div>
+    </footer>
+
+    <!-- ================= MODAL DETAIL PROYEK ================= -->
+    <div id="projectModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm transition-opacity">
+        <div class="glass-card max-w-lg w-full rounded-3xl p-6 sm:p-8 bg-white border border-white shadow-2xl relative transform transition-all scale-95" id="modalCard">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-softPink-100 text-slate-500 hover:text-softPink-500 flex items-center justify-center transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div id="modalContent">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST NOTIFICATION ================= -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 hidden items-center gap-3 px-5 py-3.5 rounded-2xl bg-white/95 border border-softPurple-200 shadow-xl text-slate-800 text-xs sm:text-sm font-medium transition-all transform translate-y-4">
+        <div id="toastIcon" class="w-7 h-7 rounded-full bg-softPink-100 flex items-center justify-center text-softPink-500">
+            <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <div>
+            <p id="toastTitle" class="font-bold text-slate-800">Berhasil!</p>
+            <p id="toastMessage" class="text-slate-500 text-xs">Pesan berhasil dikirimkan.</p>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Inisialisasi ikon Lucide
+        lucide.createIcons();
+
+        // ------------------ 1. SPARKLE CURSOR TRAIL EFFECT ------------------
+        const canvas = document.getElementById('sparkleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 2;
+                this.speedX = (Math.random() - 0.5) * 1.5;
+                this.speedY = (Math.random() - 0.5) * 1.5 - 0.5;
+                this.life = 1;
+                this.decay = Math.random() * 0.03 + 0.015;
+                // Soft pastel colors: pink, lavender, gold sparkle
+                const colors = ['#FFCAD4', '#D8B4E2', '#BDB2FF', '#F4ACB7', '#FFE5D9'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= this.decay;
+                if (this.size > 0.3) this.size -= 0.05;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.life);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                // Draw 4-point sparkle star
+                const s = this.size;
+                ctx.moveTo(this.x, this.y - s * 1.5);
+                ctx.lineTo(this.x + s * 0.4, this.y - s * 0.4);
+                ctx.lineTo(this.x + s * 1.5, this.y);
+                ctx.lineTo(this.x + s * 0.4, this.y + s * 0.4);
+                ctx.lineTo(this.x, this.y + s * 1.5);
+                ctx.lineTo(this.x - s * 0.4, this.y + s * 0.4);
+                ctx.lineTo(this.x - s * 1.5, this.y);
+                ctx.lineTo(this.x - s * 0.4, this.y - s * 0.4);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        let lastMouseTime = 0;
+        window.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastMouseTime > 30) {
+                for (let i = 0; i < 2; i++) {
+                    particles.push(new Particle(e.clientX, e.clientY));
+                }
+                lastMouseTime = now;
+            }
+        });
+
+        // Touch support for sparkles
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                const touch = e.touches[0];
+                particles.push(new Particle(touch.clientX, touch.clientY));
+            }
+        });
+
+        function animateSparkles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animateSparkles);
+        }
+        animateSparkles();
+
+        // ------------------ 2. TOAST NOTIFICATION HELPER ------------------
+        let toastTimer;
+        function showToast(title, message, isSuccess = true) {
+            const toast = document.getElementById('toastNotification');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+
+            if (isSuccess) {
+                toastIcon.className = "w-7 h-7 rounded-full bg-softPink-100 flex items-center justify-center text-softPink-500";
+                toastIcon.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i>`;
+            } else {
+                toastIcon.className = "w-7 h-7 rounded-full bg-amber-100 flex items-center justify-center text-amber-500";
+                toastIcon.innerHTML = `<i data-lucide="info" class="w-4 h-4"></i>`;
+            }
+            lucide.createIcons();
+
+            clearTimeout(toastTimer);
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4');
+                toast.classList.add('translate-y-0');
+            }, 10);
+
+            toastTimer = setTimeout(() => {
+                toast.classList.add('translate-y-4');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3800);
+        }
+
+        // ------------------ 3. DOWNLOAD CV HANDLER ------------------
+        function handleDownloadCV() {
+            const btn = document.getElementById('btnDownloadCV');
+            const originalContent = btn.innerHTML;
+
+            // Loading animation state
+            btn.innerHTML = `
+                <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Menyiapkan CV PDF...</span>
+            `;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Generate a dummy downloadable resume blob so the browser actually triggers a download
+                const dummyContent = `CV & Resume - Aura Salsabila (Creative Developer & UI Enthusiast)\n\n` +
+                    `Email: aurasalsabila@gmail.com\n` +
+                    `Pendidikan:\n- SMK Negeri 1 Surabaya (Rekayasa Perangkat Lunak)\n- S1 Sistem Informasi (UPN Veteran Jawa Timur)\n\n` +
+                    `Keahlian: HTML, CSS, JavaScript, Tailwind, Vue, UI/UX Design (Figma)\n\n` +
+                    `Terima kasih telah mengunduh CV saya! Mari bekerja sama.`;
+
+                const blob = new Blob([dummyContent], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'Aura_Salsabila_CV_Portfolio.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                // Restore button
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                lucide.createIcons();
+
+                showToast("CV Berhasil Diunduh! 📄", "Dokumen CV Aura Salsabila telah disimpan di perangkat Anda.");
+            }, 1000);
+        }
+
+        // ------------------ 4. FILTER PROYEK ------------------
+        function filterProjects(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            const cards = document.querySelectorAll('.project-card');
+
+            // Update button styles
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-category') === category) {
+                    btn.className = "filter-btn active px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-softPurple-400 text-white shadow-xs";
+                } else {
+                    btn.className = "filter-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white/70 text-slate-600 hover:bg-softPink-100 border border-slate-200";
+                }
+            });
+
+            // Filter elements
+            cards.forEach(card => {
+                const type = card.getAttribute('data-type');
+                if (category === 'all' || type === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // ------------------ 5. MODAL DETAIL PROYEK ------------------
+        const projectData = {
+            florist: {
+                title: "Florist & Gift Shop E-Commerce",
+                tag: "Web Application • Live Project",
+                desc: "Website pemesanan buket bunga aesthetic dengan fitur kustomisasi pesan kartu ucapan interaktif. Menggunakan sistem keranjang belanja responsif dan terintegrasi dengan gateway pembayaran lokal.",
+                highlights: [
+                    "Katalog bunga dengan filter palet warna soft.",
+                    "Preview live kartu ucapan sebelum checkout.",
+                    "Frontend ringan dengan Tailwind CSS dan JavaScript murni."
+                ],
+                tools: ["HTML5", "Tailwind CSS", "JavaScript ES6", "Figma"]
+            },
+            clinic: {
+                title: "Glow Clinic POS & Booking App",
+                tag: "UI/UX Design • Mobile & Web",
+                desc: "Desain sistem komprehensif klinik kecantikan yang mencakup alur registrasi pasien, penjadwalan dokter dermatologi, serta pencatatan inventaris resep skincare.",
+                highlights: [
+                    "User testing pada 10 staf klinik estetika.",
+                    "Palet pastel higienis yang memberikan kenyamanan visual bagi pasien wanita.",
+                    "Desain komponen modular berbasis AutoLayout Figma."
+                ],
+                tools: ["Figma", "Whimsical", "Design Systems", "Prototyping"]
+            },
+            study: {
+                title: "Study Bloom: Dashboard Belajar",
+                tag: "Productivity Web Tool",
+                desc: "Aplikasi produktivitas belajar mandiri bagi mahasiswi dengan nuansa lo-fi pastel. Dilengkapi papan kanban tugas kuliah, pencatat ide harian, dan timer pomodoro relaksasi.",
+                highlights: [
+                    "Penyimpanan otomatis tanpa backend (LocalStorage).",
+                    "Fitur pemutar white noise / lo-fi ambience.",
+                    "Animasi transisi halus dan ramah baterai."
+                ],
+                tools: ["Vue.js", "Tailwind CSS", "Web Audio API", "LocalStorage"]
+            }
+        };
+
+        function openModal(id) {
+            const data = projectData[id];
+            if (!data) return;
+
+            const modal = document.getElementById('projectModal');
+            const modalCard = document.getElementById('modalCard');
+            const content = document.getElementById('modalContent');
+
+            content.innerHTML = `
+                <div class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-softPink-100 text-softPink-500 mb-2">
+                    ${data.tag}
+                </div>
+                <h3 class="text-2xl font-bold text-slate-800 font-serif">${data.title}</h3>
+                <p class="text-xs text-slate-600 mt-3 leading-relaxed">${data.desc}</p>
+                
+                <div class="mt-4 p-4 rounded-2xl bg-softPurple-50/70 border border-softPurple-100">
+                    <span class="text-xs font-bold text-softPurple-600 block mb-2">Fitur Unggulan:</span>
+                    <ul class="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                        ${data.highlights.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="mt-4">
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-2">Teknologi yang Digunakan</span>
+                    <div class="flex flex-wrap gap-2">
+                        ${data.tools.map(tool => `<span class="px-2.5 py-1 rounded-lg text-xs bg-white text-slate-700 border border-slate-200 font-mono">${tool}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-slate-100 flex gap-3">
+                    <button onclick="closeModal()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs transition-colors">
+                        Tutup Jendela
+                    </button>
+                    <button onclick="showToast('Demo Tersedia! ✨', 'Membuka preview interaktif dalam tab baru.'); closeModal();" class="w-full py-2.5 rounded-xl bg-softPurple-400 hover:bg-softPurple-500 text-white font-medium text-xs transition-colors flex items-center justify-center gap-1.5">
+                        <span>Lihat Demo</span>
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            `;
+
+            lucide.createIcons();
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modalCard.classList.remove('scale-95');
+                modalCard.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('projectModal');
+            const modalCard = document.getElementById('modalCard');
+            modalCard.classList.remove('scale-100');
+            modalCard.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 150);
+        }
+
+        // Close on backdrop click
+        document.getElementById('projectModal').addEventListener('click', (e) => {
+            if (e.target.id === 'projectModal') closeModal();
+        });
+
+        // ------------------ 6. CONTACT FORM HANDLER ------------------
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btnSubmitForm');
+            const name = document.getElementById('senderName').value;
+            const originalText = btn.innerHTML;
+
+            btn.disabled = true;
+            btn.innerHTML = `
+                <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Mengirimkan pesan...</span>
+            `;
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                lucide.createIcons();
+
+                showToast(`Terima kasih, ${name}! 💌`, "Pesan Anda telah diterima. Saya akan segera membalasnya!");
+                document.getElementById('contactForm').reset();
+            }, 900);
+        }
+    </script>
+</body>
+</html>
